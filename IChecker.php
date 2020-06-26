@@ -450,7 +450,12 @@ class IChecker {
         }
 
         if (!$bolRet) {
-            $strMsg = "key $strKey (" . implode('; or else, ', $arrMsg) . ")";
+            if (count($arrMsg) > 1) {
+                $strMsg = implode('; ', array_map(function($k, $strMsg) {
+                    return "with key rule $k, $strMsg";
+                }, array_keys($arrMsg), array_values($arrMsg)));
+            }
+            $strMsg = "key $strKey ($strMsg)";
         }
         return [$bolRet, $strMsg, $arrInput];
     }
